@@ -123,6 +123,60 @@ Project2/fast:
 	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/build
 .PHONY : Project2/fast
 
+Neighbors.o: Neighbors.cpp.o
+
+.PHONY : Neighbors.o
+
+# target to build an object file
+Neighbors.cpp.o:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Neighbors.cpp.o
+.PHONY : Neighbors.cpp.o
+
+Neighbors.i: Neighbors.cpp.i
+
+.PHONY : Neighbors.i
+
+# target to preprocess a source file
+Neighbors.cpp.i:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Neighbors.cpp.i
+.PHONY : Neighbors.cpp.i
+
+Neighbors.s: Neighbors.cpp.s
+
+.PHONY : Neighbors.s
+
+# target to generate assembly for a file
+Neighbors.cpp.s:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Neighbors.cpp.s
+.PHONY : Neighbors.cpp.s
+
+State.o: State.cpp.o
+
+.PHONY : State.o
+
+# target to build an object file
+State.cpp.o:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/State.cpp.o
+.PHONY : State.cpp.o
+
+State.i: State.cpp.i
+
+.PHONY : State.i
+
+# target to preprocess a source file
+State.cpp.i:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/State.cpp.i
+.PHONY : State.cpp.i
+
+State.s: State.cpp.s
+
+.PHONY : State.s
+
+# target to generate assembly for a file
+State.cpp.s:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/State.cpp.s
+.PHONY : State.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -159,6 +213,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Project2"
 	@echo "... edit_cache"
+	@echo "... Neighbors.o"
+	@echo "... Neighbors.i"
+	@echo "... Neighbors.s"
+	@echo "... State.o"
+	@echo "... State.i"
+	@echo "... State.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
