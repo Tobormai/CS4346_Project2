@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Project2.dir/Element.cpp.o"
   "CMakeFiles/Project2.dir/Neighbors.cpp.o"
+  "CMakeFiles/Project2.dir/Node.cpp.o"
   "CMakeFiles/Project2.dir/State.cpp.o"
   "CMakeFiles/Project2.dir/main.cpp.o"
   "Project2.exe"

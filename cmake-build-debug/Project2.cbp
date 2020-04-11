@@ -80,10 +80,22 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Element.cpp">
+			<Option target="Project2"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Element.h">
+			<Option target="Project2"/>
+		</Unit>
 		<Unit filename="/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Neighbors.cpp">
 			<Option target="Project2"/>
 		</Unit>
 		<Unit filename="/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Neighbors.h">
+			<Option target="Project2"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Node.cpp">
+			<Option target="Project2"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Node.h">
 			<Option target="Project2"/>
 		</Unit>
 		<Unit filename="/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/State.cpp">

@@ -123,6 +123,33 @@ Project2/fast:
 	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/build
 .PHONY : Project2/fast
 
+Element.o: Element.cpp.o
+
+.PHONY : Element.o
+
+# target to build an object file
+Element.cpp.o:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Element.cpp.o
+.PHONY : Element.cpp.o
+
+Element.i: Element.cpp.i
+
+.PHONY : Element.i
+
+# target to preprocess a source file
+Element.cpp.i:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Element.cpp.i
+.PHONY : Element.cpp.i
+
+Element.s: Element.cpp.s
+
+.PHONY : Element.s
+
+# target to generate assembly for a file
+Element.cpp.s:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Element.cpp.s
+.PHONY : Element.cpp.s
+
 Neighbors.o: Neighbors.cpp.o
 
 .PHONY : Neighbors.o
@@ -149,6 +176,33 @@ Neighbors.s: Neighbors.cpp.s
 Neighbors.cpp.s:
 	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Neighbors.cpp.s
 .PHONY : Neighbors.cpp.s
+
+Node.o: Node.cpp.o
+
+.PHONY : Node.o
+
+# target to build an object file
+Node.cpp.o:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Node.cpp.o
+.PHONY : Node.cpp.o
+
+Node.i: Node.cpp.i
+
+.PHONY : Node.i
+
+# target to preprocess a source file
+Node.cpp.i:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Node.cpp.i
+.PHONY : Node.cpp.i
+
+Node.s: Node.cpp.s
+
+.PHONY : Node.s
+
+# target to generate assembly for a file
+Node.cpp.s:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Node.cpp.s
+.PHONY : Node.cpp.s
 
 State.o: State.cpp.o
 
@@ -213,9 +267,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Project2"
 	@echo "... edit_cache"
+	@echo "... Element.o"
+	@echo "... Element.i"
+	@echo "... Element.s"
 	@echo "... Neighbors.o"
 	@echo "... Neighbors.i"
 	@echo "... Neighbors.s"
+	@echo "... Node.o"
+	@echo "... Node.i"
+	@echo "... Node.s"
 	@echo "... State.o"
 	@echo "... State.i"
 	@echo "... State.s"

@@ -21,6 +21,10 @@ class State
 {
 private:
     IntArray _state; //represent tiles on puzzle; unique combination of tiles
+    IntArray _initialState1 = {2, 8, 3, 1, 6, 4, 0, 7, 5};
+    IntArray _initialState2 = {2, 1, 6, 4, 0, 8, 7, 5, 3};
+
+
     unsigned int _rows_or_cols;
 
 public:
