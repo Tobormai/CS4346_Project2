@@ -6,7 +6,6 @@
 #define PROJECT2_NEIGHBORS_H
 using namespace std;
 
-
 #include <vector>
 #include <random>
 #include <map>
@@ -14,20 +13,20 @@ using namespace std;
 #include <cassert>
 #include <algorithm>
 
-class Neighbours
+class Neighbors
 {
 public:
-    typedef map<int, vector<int> > IndexNeighbourMap;
-    IndexNeighbourMap _edges;
+    typedef map<int, vector<int> > IndexNeighborMap;
+    IndexNeighborMap _edges;
 
-    Neighbours()
+    Neighbors()
     {
        CreateGraphFor8Puzzle();
     }
 
-    const vector<int> &GetNeighbours(int id) const
+    const vector<int> &GetNeighbors(int id) const
     {
-       IndexNeighbourMap::const_iterator itr(_edges.find(id));
+       IndexNeighborMap::const_iterator itr(_edges.find(id));
        if (itr != _edges.end())
        { return itr->second; }
        static vector<int> s;

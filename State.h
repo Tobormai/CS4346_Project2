@@ -21,10 +21,6 @@ class State
 {
 private:
     IntArray _state; //represent tiles on puzzle; unique combination of tiles
-    IntArray _initialState1 = {2, 8, 3, 1, 6, 4, 0, 7, 5};
-    IntArray _initialState2 = {2, 1, 6, 4, 0, 8, 7, 5, 3};
-
-
     unsigned int _rows_or_cols;
 
 public:
@@ -37,7 +33,7 @@ public:
        }
     }
 
-    //constructor
+    //constructor: that takes in the num_rows_or_cols and an initial state of the array
     State(unsigned int rows_or_cols, const IntArray &arr) : _rows_or_cols(rows_or_cols)
     {
        assert(arr.size() == _rows_or_cols * rows_or_cols);
@@ -56,7 +52,7 @@ public:
     }
 
     //equal to operator
-    friend bool operator==(const State &a, const State &a, const State &b)
+    friend bool operator==(const State &a, const State &b)
     {
        return (a._state == b._state);
     }
@@ -66,7 +62,6 @@ public:
     {
        return (a._state != b._state);
     }
-
 
     //determine the index of blank tile
     inline int FindEmptyTileIndex() const
@@ -105,6 +100,12 @@ public:
        _state = arr;;
     }
 
+
+    inline unsigned int GetNumRowsOrCols() const
+    {
+       return _rows_or_cols;
+    }
+
     //print state
     void print(ostream &str, bool flat = false) const
     {
@@ -129,7 +130,6 @@ public:
        }
        str << "\n";
     }
-
 
 };
 
