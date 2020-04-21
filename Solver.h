@@ -106,6 +106,8 @@ public:
         BREADTH_FIRST,
         GREEDY_BEST_FIRST,
         ASTAR,
+        SMA,
+        IDA
     };
 
     Solver(const State &start, const State &goal, Type type = Type::ASTAR)
@@ -186,6 +188,35 @@ public:
 
              break;
           }
+          case IDA:
+          {
+             //Why: Want low space complexity but completeness and optimality
+             //Key Idea: re-compute elements of the frontier rather than saving them
+             //Use DFS to look for solutions at depth 1, then 2, then 3..etc.
+             //for depth D, ignore any paths with longer length
+             //depth bound is measured in terms of the f value
+             //If you don’t find a solution at a given depth –
+             // Increase the depth bound: to the minimum of the f-values that exceeded the previous bound
+
+             //Manhattan Distance get approximation of ‘how far’ are we from reaching the final state.
+             // IDDFS to search if target is reachable from v.
+
+
+             //Steps:
+
+             //
+             //Perform depth-bounded search at depth = 0.
+             // Initialize Frontier = {A}, depth = 0. Remove A from Frontier. Check if A is goal. A at maximum depth bound of depth 0 so don't expand A.
+             // Reiterate. Frontier initialized to A. Remove A from Frontier. A is not a goal. A is not at maximum depth bound so expand A.
+             // Children of A are B and C. Frontier = {B, C}. B removed from Frontier. B is not a goal. B is at maximum depth bound so don't expand.
+             // Children of A are B and C. Frontier = {C}. C removed from Frontier. C is not a goal. C is at maximum depth bound so don't expand.
+             //Reiterate. Start all over from A.
+
+             //Note: Order of Expansion or order nodes removed from Frontier was maintained.
+             //Note: Depth bound is incremented on each iteration starting at depth = 0
+             //Note: Repetitive but has linear space complexity. allows for fast cache memory rather than having to
+             // access slower memory. Speedup due to limited amount of memory have to store simultaneously for this algorithm.
+          }
           case DEPTH_FIRST:
              //current = _openlist[0];
              NodeList::iterator current_itr(_openlist.begin());
@@ -201,6 +232,7 @@ public:
 
              break;
        }
+
        return current;
     }
 
