@@ -123,113 +123,32 @@ Project2/fast:
 	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/build
 .PHONY : Project2/fast
 
-Element.o: Element.cpp.o
+Solver.o: Solver.cpp.o
 
-.PHONY : Element.o
-
-# target to build an object file
-Element.cpp.o:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Element.cpp.o
-.PHONY : Element.cpp.o
-
-Element.i: Element.cpp.i
-
-.PHONY : Element.i
-
-# target to preprocess a source file
-Element.cpp.i:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Element.cpp.i
-.PHONY : Element.cpp.i
-
-Element.s: Element.cpp.s
-
-.PHONY : Element.s
-
-# target to generate assembly for a file
-Element.cpp.s:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Element.cpp.s
-.PHONY : Element.cpp.s
-
-Neighbors.o: Neighbors.cpp.o
-
-.PHONY : Neighbors.o
+.PHONY : Solver.o
 
 # target to build an object file
-Neighbors.cpp.o:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Neighbors.cpp.o
-.PHONY : Neighbors.cpp.o
+Solver.cpp.o:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Solver.cpp.o
+.PHONY : Solver.cpp.o
 
-Neighbors.i: Neighbors.cpp.i
+Solver.i: Solver.cpp.i
 
-.PHONY : Neighbors.i
-
-# target to preprocess a source file
-Neighbors.cpp.i:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Neighbors.cpp.i
-.PHONY : Neighbors.cpp.i
-
-Neighbors.s: Neighbors.cpp.s
-
-.PHONY : Neighbors.s
-
-# target to generate assembly for a file
-Neighbors.cpp.s:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Neighbors.cpp.s
-.PHONY : Neighbors.cpp.s
-
-Node.o: Node.cpp.o
-
-.PHONY : Node.o
-
-# target to build an object file
-Node.cpp.o:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Node.cpp.o
-.PHONY : Node.cpp.o
-
-Node.i: Node.cpp.i
-
-.PHONY : Node.i
+.PHONY : Solver.i
 
 # target to preprocess a source file
-Node.cpp.i:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Node.cpp.i
-.PHONY : Node.cpp.i
+Solver.cpp.i:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Solver.cpp.i
+.PHONY : Solver.cpp.i
 
-Node.s: Node.cpp.s
+Solver.s: Solver.cpp.s
 
-.PHONY : Node.s
-
-# target to generate assembly for a file
-Node.cpp.s:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Node.cpp.s
-.PHONY : Node.cpp.s
-
-State.o: State.cpp.o
-
-.PHONY : State.o
-
-# target to build an object file
-State.cpp.o:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/State.cpp.o
-.PHONY : State.cpp.o
-
-State.i: State.cpp.i
-
-.PHONY : State.i
-
-# target to preprocess a source file
-State.cpp.i:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/State.cpp.i
-.PHONY : State.cpp.i
-
-State.s: State.cpp.s
-
-.PHONY : State.s
+.PHONY : Solver.s
 
 # target to generate assembly for a file
-State.cpp.s:
-	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/State.cpp.s
-.PHONY : State.cpp.s
+Solver.cpp.s:
+	$(MAKE) -f CMakeFiles/Project2.dir/build.make CMakeFiles/Project2.dir/Solver.cpp.s
+.PHONY : Solver.cpp.s
 
 main.o: main.cpp.o
 
@@ -267,18 +186,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Project2"
 	@echo "... edit_cache"
-	@echo "... Element.o"
-	@echo "... Element.i"
-	@echo "... Element.s"
-	@echo "... Neighbors.o"
-	@echo "... Neighbors.i"
-	@echo "... Neighbors.s"
-	@echo "... Node.o"
-	@echo "... Node.i"
-	@echo "... Node.s"
-	@echo "... State.o"
-	@echo "... State.i"
-	@echo "... State.s"
+	@echo "... Solver.o"
+	@echo "... Solver.i"
+	@echo "... Solver.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

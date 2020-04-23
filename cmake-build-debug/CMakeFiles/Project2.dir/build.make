@@ -70,77 +70,32 @@ CMakeFiles/Project2.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project2.dir/main.cpp.s"
 	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/main.cpp -o CMakeFiles/Project2.dir/main.cpp.s
 
-CMakeFiles/Project2.dir/State.cpp.o: CMakeFiles/Project2.dir/flags.make
-CMakeFiles/Project2.dir/State.cpp.o: ../State.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Project2.dir/State.cpp.o"
-	C:/cygwin64/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project2.dir/State.cpp.o -c /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/State.cpp
+CMakeFiles/Project2.dir/Solver.cpp.o: CMakeFiles/Project2.dir/flags.make
+CMakeFiles/Project2.dir/Solver.cpp.o: ../Solver.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Project2.dir/Solver.cpp.o"
+	C:/cygwin64/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project2.dir/Solver.cpp.o -c /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Solver.cpp
 
-CMakeFiles/Project2.dir/State.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project2.dir/State.cpp.i"
-	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/State.cpp > CMakeFiles/Project2.dir/State.cpp.i
+CMakeFiles/Project2.dir/Solver.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project2.dir/Solver.cpp.i"
+	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Solver.cpp > CMakeFiles/Project2.dir/Solver.cpp.i
 
-CMakeFiles/Project2.dir/State.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project2.dir/State.cpp.s"
-	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/State.cpp -o CMakeFiles/Project2.dir/State.cpp.s
-
-CMakeFiles/Project2.dir/Neighbors.cpp.o: CMakeFiles/Project2.dir/flags.make
-CMakeFiles/Project2.dir/Neighbors.cpp.o: ../Neighbors.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Project2.dir/Neighbors.cpp.o"
-	C:/cygwin64/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project2.dir/Neighbors.cpp.o -c /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Neighbors.cpp
-
-CMakeFiles/Project2.dir/Neighbors.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project2.dir/Neighbors.cpp.i"
-	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Neighbors.cpp > CMakeFiles/Project2.dir/Neighbors.cpp.i
-
-CMakeFiles/Project2.dir/Neighbors.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project2.dir/Neighbors.cpp.s"
-	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Neighbors.cpp -o CMakeFiles/Project2.dir/Neighbors.cpp.s
-
-CMakeFiles/Project2.dir/Element.cpp.o: CMakeFiles/Project2.dir/flags.make
-CMakeFiles/Project2.dir/Element.cpp.o: ../Element.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Project2.dir/Element.cpp.o"
-	C:/cygwin64/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project2.dir/Element.cpp.o -c /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Element.cpp
-
-CMakeFiles/Project2.dir/Element.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project2.dir/Element.cpp.i"
-	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Element.cpp > CMakeFiles/Project2.dir/Element.cpp.i
-
-CMakeFiles/Project2.dir/Element.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project2.dir/Element.cpp.s"
-	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Element.cpp -o CMakeFiles/Project2.dir/Element.cpp.s
-
-CMakeFiles/Project2.dir/Node.cpp.o: CMakeFiles/Project2.dir/flags.make
-CMakeFiles/Project2.dir/Node.cpp.o: ../Node.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Project2.dir/Node.cpp.o"
-	C:/cygwin64/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project2.dir/Node.cpp.o -c /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Node.cpp
-
-CMakeFiles/Project2.dir/Node.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project2.dir/Node.cpp.i"
-	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Node.cpp > CMakeFiles/Project2.dir/Node.cpp.i
-
-CMakeFiles/Project2.dir/Node.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project2.dir/Node.cpp.s"
-	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Node.cpp -o CMakeFiles/Project2.dir/Node.cpp.s
+CMakeFiles/Project2.dir/Solver.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project2.dir/Solver.cpp.s"
+	C:/cygwin64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Solver.cpp -o CMakeFiles/Project2.dir/Solver.cpp.s
 
 # Object files for target Project2
 Project2_OBJECTS = \
 "CMakeFiles/Project2.dir/main.cpp.o" \
-"CMakeFiles/Project2.dir/State.cpp.o" \
-"CMakeFiles/Project2.dir/Neighbors.cpp.o" \
-"CMakeFiles/Project2.dir/Element.cpp.o" \
-"CMakeFiles/Project2.dir/Node.cpp.o"
+"CMakeFiles/Project2.dir/Solver.cpp.o"
 
 # External object files for target Project2
 Project2_EXTERNAL_OBJECTS =
 
 Project2.exe: CMakeFiles/Project2.dir/main.cpp.o
-Project2.exe: CMakeFiles/Project2.dir/State.cpp.o
-Project2.exe: CMakeFiles/Project2.dir/Neighbors.cpp.o
-Project2.exe: CMakeFiles/Project2.dir/Element.cpp.o
-Project2.exe: CMakeFiles/Project2.dir/Node.cpp.o
+Project2.exe: CMakeFiles/Project2.dir/Solver.cpp.o
 Project2.exe: CMakeFiles/Project2.dir/build.make
 Project2.exe: CMakeFiles/Project2.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable Project2.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Project2.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Project2.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
