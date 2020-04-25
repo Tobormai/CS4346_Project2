@@ -59,7 +59,6 @@ inline int GetManhattanCost(const State &st)
       int mancost = abs(x - gx) + abs(y - gy);
       cost += mancost;
 
-      int z = 0;
    }
    return cost;
 }
@@ -118,8 +117,77 @@ inline int calculateSofN(const State &st) // Non-admissable heuristic function
 return SofN;
 }
 
-// ERIK ADDED HERE ABOVE
 
+// Function to calculate admissable heuristic based off a subproblem. This function uses the pattern database method
+// to create heuristic. Similar to manhattan distance - but can be more effective only using subproblem calculations
+// Set pattern of a subproblem of correct values, then calculate distances of to get to that pattern
+// For this pattern we will use subproblem of 3,4,5,6 in correct respective positions
+inline int calculatePatternDatabase(const State &st) // Subproblem Admissable heuristic function
+{
+   int cost = 0;                          // creating variable to hold cost
+   const IntArray &state = st.GetArray(); // Creating reference to the array
+   unsigned int rows_or_cols = st.GetNumRowsOrCols();
+    
+    for (unsigned int i = 0; i < state.size(); ++i){
+    
+    // Locate 3,4,5,6
+    // Calculate distance from correct positions
+    // Save that item as cost
+        if(state[i] == 3){
+        if(i != 2) // If correct position - does not add to cost
+        {
+        int v = state[i];   // Calculation of  distance for this only pattern*
+        int gx = v % rows_or_cols;
+        int gy = v / rows_or_cols;
+        int x = i % rows_or_cols;
+        int y = i / rows_or_cols;
+        int mancost = abs(x - gx) + abs(y - gy);
+        cost += mancost;  // Creating Cost
+        }
+            
+        } else if (state[i] == 4){
+        if(i != 5) // If correct position - does not add to cost
+        {
+        int v = state[i];  // Calculation of distance for this only pattern*
+        int gx = v % rows_or_cols;
+        int gy = v / rows_or_cols;
+        int x = i % rows_or_cols;
+        int y = i / rows_or_cols;
+        int mancost = abs(x - gx) + abs(y - gy);
+        cost += mancost;  // Creating Cost
+        }
+            
+        } else if (state[i] == 5){
+        if(i != 8) // If correct position - does not add to cost
+        {
+        int v = state[i]; // Calculation of distance for this only pattern*
+        int gx = v % rows_or_cols;
+        int gy = v / rows_or_cols;
+        int x = i % rows_or_cols;
+        int y = i / rows_or_cols;
+        int mancost = abs(x - gx) + abs(y - gy);
+        cost += mancost;  // Creating Cost
+        }
+            
+        } else if (state[i] == 6){ // Checking value 6 in correct position
+        if(i != 7) // If correct position - does not add to cost
+        {
+        int v = state[i]; // Calculation of distance for this only pattern*
+        int gx = v % rows_or_cols;
+        int gy = v / rows_or_cols;
+        int x = i % rows_or_cols;
+        int y = i / rows_or_cols;
+        int mancost = abs(x - gx) + abs(y - gy);
+        cost += mancost;  // Creating Cost
+        }
+        } else {
+            continue;
+        }
+      }
+return cost;
+}
+
+// ERIK ADDED HERE ABOVE
 
 class CompareFunctorForGreedyBestFirst
 {
@@ -173,6 +241,25 @@ public:
     }
 };
 
+class ComparePatternDatabase
+{
+public:
+    bool operator()(
+             // Using only a portion of manhattan distance - for subproblem
+            const std::shared_ptr<Node> &n1,
+            const std::shared_ptr<Node> &n2) const
+    {
+     
+       const State &state1 = n1->GetState();
+       int cost1 = calculatePatternDatabase(state1) + n1->GetDepth(); // Cost is based off distance of pattern values
+       const State &state2 = n2->GetState();
+       int cost2 = calculatePatternDatabase(state2) + n2->GetDepth(); // Cost is based off distance of pattern values
+       return cost1 < cost2;
+    }
+};
+
+
+
 // ERIK ADDED ABOVE
 
 class Solver
@@ -186,7 +273,8 @@ public:
         ASTAR,
         SMA,
         IDA,
-        AStarSN // ERIK ADDED
+        AStarSN, // ERIK ADDED
+        patternDatabase // ERIK ADDED
     };
 
     Solver(const State &start, const State &goal, Type type = Type::ASTAR)
@@ -221,7 +309,27 @@ public:
 
        switch (_type)
        {
+               
                // **** ERIK Added here
+            case patternDatabase:
+                 {
+                     NodeList::iterator current_itr(std::min_element(
+                         _openlist.begin(),
+                         _openlist.end(),
+                         ComparePatternDatabase()));
+
+                         if (current_itr == _openlist.end())
+                         { return 0; }
+
+                        //copy the value first to a shared pointer and then erase from the open list.
+                        current = *current_itr;
+
+                        // now erase from the open list.
+                        _openlist.erase(current_itr);
+                        _closedlist.push_back(current);
+                        break;
+                        }
+         
             case AStarSN:
                  {
                     NodeList::iterator current_itr(std::min_element(
