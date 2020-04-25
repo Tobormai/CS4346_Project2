@@ -93,13 +93,13 @@ public:
     {
        const State &state1 = n1->GetState();
        int cost1 = GetHammingCost(state1) + n1->GetDepth();
-       std::cout << " h1(n):" << GetHammingCost(state1) << " g(n):" << n1->GetDepth() << " f(n): "
-                 << GetHammingCost(state1) + n1->GetDepth() << endl;
+/*       std::cout << " h1(n):" << GetHammingCost(state1) << " g(n):" << n1->GetDepth() << " f(n): "
+                 << GetHammingCost(state1) + n1->GetDepth() << endl;*/
 
        const State &state2 = n2->GetState();
        int cost2 = GetHammingCost(state2) + n2->GetDepth();
-       std::cout << " h1(n):" << GetHammingCost(state2) << " g(n):" << n2->GetDepth() << " f(n): "
-                 << GetHammingCost(state1) + n2->GetDepth() << endl;
+/*       std::cout << " h1(n):" << GetHammingCost(state2) << " g(n):" << n2->GetDepth() << " f(n): "
+                 << GetHammingCost(state1) + n2->GetDepth() << endl;*/
        return cost1 < cost2;
     }
 };
@@ -115,15 +115,15 @@ public:
     {
        const State &state1 = n1->GetState();
        int cost1 = GetManhattanCost(state1) + n1->GetDepth();
-       std::cout << "h2(n):" << GetManhattanCost(state1) << " g(n):" << n1->GetDepth() << " f(n): "
-                 << GetManhattanCost(state1) + n1->GetDepth()
-                 << endl;
+       /*  std::cout << "h2(n):" << GetManhattanCost(state1) << " g(n):" << n1->GetDepth() << " f(n): "
+                   << GetManhattanCost(state1) + n1->GetDepth()
+                   << endl;*/
 
        const State &state2 = n2->GetState();
        int cost2 = GetManhattanCost(state2) + n2->GetDepth();
-       std::cout << "h2(n):" << GetManhattanCost(state2) << " g(n):" << n2->GetDepth() << " f(n): "
-                 << GetManhattanCost(state2) + n2->GetDepth()
-                 << endl;
+       /*     std::cout << "h2(n):" << GetManhattanCost(state2) << " g(n):" << n2->GetDepth() << " f(n): "
+                      << GetManhattanCost(state2) + n2->GetDepth()
+                      << endl;*/
        return cost1 < cost2;
     }
 };
