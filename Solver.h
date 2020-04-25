@@ -64,6 +64,62 @@ inline int GetManhattanCost(const State &st)
    return cost;
 }
 
+// ERIK ADDED HERE BELOW
+
+// Function to Calculate S(n) to be implemented into the A* Algorithm
+// Rules are to Check around non-central squares - alloting 2 for each tile not followed by its successor
+// alotting 0 for every other tile
+// Piece in the center scores one
+inline int calculateSofN(const State &st) // Non-admissable heuristic function
+{
+   int SofN = 0;                          // creating variable to hold S(n)
+   const IntArray &state = st.GetArray(); // Creating reference to the array
+    for (unsigned int i = 0; i < state.size(); ++i)
+      {
+              // Multiple Rules, and not saved in order due to goal state -Using if/else
+              // Check successors in a circle to follow function
+              if (i == 0 ){      // Pos 0
+              if (state[0] + 1 != state[1]){ // Checks if pos 0 is 1 less then pos 1
+              SofN = SofN + 2;}  // Adds 2
+    
+              } else if(i == 1){ // Pos 1
+              if (state[1] + 1 != state[2]){ // Checks if pos 0 is 1 less then pos 1
+              SofN = SofN + 2; }
+                  
+              } else if(i == 2){ // Pos 2 // Checking Down as circular function
+              if (state[2] + 1 != state[5]){ // Checks if pos 2 is 1 less then pos 5
+              SofN = SofN + 2;}
+                  
+              } else if(i == 3){ // Pos 3
+              if (state[3] + 1 != state[0]){ // Checks if pos 0 is 1 less then pos 3
+              SofN = SofN + 2;}
+                  
+              } else if (i == 4){ // MIDDLE SQUARE GETS 1 if not 0/blank
+              if (state[i] != 0){ // Middle is not the blank
+              SofN = SofN +1; }// Add one for middle
+                  
+              } else if(i == 5){ // Pos 5
+              if (state[5] + 1 != state[8]){ // Checks if pos 5 is 1 more then pos 8
+              SofN = SofN + 2;}
+                  
+              } else if(i == 6){ // Pos 6
+              if (state[6] + 1 != state[3]){ // Checks if pos 6 is 1 less then pos 3
+             SofN = SofN + 2;}
+                  
+              } else if(i == 7){ // Pos 7
+              if (state[7] + 1 != state[6]){ // Checks if pos 7 is 1 more then pos 8
+              SofN = SofN + 2;}
+                  
+              } else if(i == 8){ // Pos 8
+              if (state[8] + 1 != state[7]){ // Checks if pos 7 is 1 more then 8
+              SofN = SofN + 2;}
+          }
+      }
+return SofN;
+}
+
+// ERIK ADDED HERE ABOVE
+
 
 class CompareFunctorForGreedyBestFirst
 {
@@ -97,6 +153,28 @@ public:
     }
 };
 
+// ERIK ADDED BELOW
+class CompareFunctorForAStarSN
+{
+public:
+    bool operator()(
+            const std::shared_ptr<Node> &n1,
+            const std::shared_ptr<Node> &SN) const
+    {
+       // Function for h(n) using S(n)
+       // H(n) = h1(n)+ 3*S(n)
+       const State &state1 = n1->GetState();
+       int cost1 = GetHammingCost(state1) + 3 * calculateSofN(state1) + n1->GetDepth();
+        
+       const State &state2 = SN->GetState();
+       int cost2 = GetHammingCost(state2) + 3 * calculateSofN(state2) + SN->GetDepth();
+        
+       return cost1 < cost2;
+    }
+};
+
+// ERIK ADDED ABOVE
+
 class Solver
 {
 public:
@@ -107,7 +185,8 @@ public:
         GREEDY_BEST_FIRST,
         ASTAR,
         SMA,
-        IDA
+        IDA,
+        AStarSN // ERIK ADDED
     };
 
     Solver(const State &start, const State &goal, Type type = Type::ASTAR)
@@ -142,12 +221,34 @@ public:
 
        switch (_type)
        {
+               // **** ERIK Added here
+            case AStarSN:
+                 {
+                    NodeList::iterator current_itr(std::min_element(
+                            _openlist.begin(),
+                            _openlist.end(),
+                            CompareFunctorForAStar()));
+
+                    if (current_itr == _openlist.end())
+                    { return 0; }
+
+                    //copy the value first to a shared pointer and then erase from the open list.
+                    current = *current_itr;
+
+                    // now erase from the open list.
+                    _openlist.erase(current_itr);
+                    _closedlist.push_back(current);
+                    break;
+                 }
+               // **** ERIK Added here
+               
+               
           case ASTAR:
           {
              NodeList::iterator current_itr(std::min_element(
                      _openlist.begin(),
                      _openlist.end(),
-                     CompareFunctorForAStar()));
+                     CompareFunctorForAStarSN()));
 
              if (current_itr == _openlist.end())
              { return 0; }
@@ -232,6 +333,8 @@ public:
 
              break;
        }
+        
+        
 
        return current;
     }
