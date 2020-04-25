@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
 //********CHANGE ME TO RUN DIFFERENT SOLVER ALGORITHM*******//
    std::shared_ptr<Node> node;
-   Solver solver(start, goal, Solver::IDA);
+   Solver solver(start, goal, Solver::patternDatabase);
    if (!solver.isSolvable())
    {
       std::cout << "Puzzle state is unsolvable..!\n";
@@ -33,9 +33,16 @@ int main(int argc, char *argv[])
    while (!solver.isSolved())
    {
       runtime = ((clock() * 1000) / CLOCKS_PER_SEC) - timer;
-      node = solver.GetNextNode();
-      solver.ExpandNode(node, g);
-      count++;
+      if (1)
+      {
+         node = solver.GetNextNode();
+         solver.ExpandNode(node, g);
+         count++;
+      }
+      else
+      {
+         std::cout << "IDA algorithm do not expand" << endl;
+      }
    }
 
    // accumulate the nodes for the solution.
