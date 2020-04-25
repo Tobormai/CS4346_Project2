@@ -62,7 +62,7 @@ public:
        {
           out << _state.GetArray()[i];
        }
-       out << " | D: " << _depth;
+       out << " | Depth: " << _depth;
        out << " }" << "\n";
     }
 };
