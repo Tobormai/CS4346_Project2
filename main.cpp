@@ -15,13 +15,15 @@ int main(int argc, char *argv[])
 
    Neighbors g;
 
-   State goal(3, std::vector<int>{1, 2, 3, 8, 0, 4, 7, 6, 5});
-   //State start(3, std::vector<int>{2, 8, 3, 1, 6, 4, 0, 7, 5});
-   State start(3, std::vector<int>{2, 1, 6, 4, 0, 8, 7, 5, 3});
+//   State goal(3, std::vector<int>{1, 2, 3, 8, 0, 4, 7, 6, 5});
+//   State start(3, std::vector<int>{2, 1, 6, 4, 0, 8, 7, 5, 3});
+
+   State goal(3, std::vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 0});
+   State start(3, std::vector<int>{1, 2, 3, 0, 4, 6, 7, 5, 8});
 
 //********CHANGE ME TO RUN DIFFERENT SOLVER ALGORITHM*******//
    std::shared_ptr<Node> node;
-   Solver solver(start, goal, Solver::ASTAR);
+   Solver solver(start, goal, Solver::ASTAR_H2);
    if (!solver.isSolvable())
    {
       std::cout << "Puzzle state is unsolvable..!\n";

@@ -1,5 +1,5 @@
 //
-// Created by WYNI on 4/6/2020.
+// Created by Shervone Mayes on 4/6/2020.
 //
 
 #ifndef PROJECT2_STATE_H
@@ -17,13 +17,15 @@ using namespace std;
 //type definitions
 typedef std::vector<int> IntArray;
 
+//State class represents a unique combination of tiles
 class State
 {
 private:
     IntArray _state; //represent tiles on puzzle; unique combination of tiles
-    unsigned int _rows_or_cols;
+    unsigned int _rows_or_cols; //defines puzzle dimensions (e.g. want 3x3 so value is 3)
 
 public:
+    //constructor: default accepts value to define puzzle dimension
     explicit State(unsigned int rows_or_cols) : _rows_or_cols(_rows_or_cols)
     {
        _state.resize(_rows_or_cols * rows_or_cols);
@@ -40,7 +42,14 @@ public:
        _state = arr;
     }
 
-    //operators
+    //constructor: copy
+    State(const State &other)
+    {
+       _rows_or_cols = other._rows_or_cols;
+       _state = other._state;
+    }
+
+    //assignment operator
     State &operator=(const State &other)
     {
        if (this != &other)
@@ -63,7 +72,7 @@ public:
        return (a._state != b._state);
     }
 
-    //determine the index of blank tile
+    //determine the index of blank tile. iterate until determine index of empty tile
     inline int FindEmptyTileIndex() const
     {
        for (int i = 0; i < _state.size(); i++)

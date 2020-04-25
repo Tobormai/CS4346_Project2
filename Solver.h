@@ -23,6 +23,7 @@ inline bool isInArray(const State &state, const std::vector<std::shared_ptr<Node
    return false;
 }
 
+//(h1) : number of misplaced tiles for _state
 inline int GetHammingCost(const State &st)
 {
    int cost = 0;
@@ -37,6 +38,7 @@ inline int GetHammingCost(const State &st)
    return cost;
 }
 
+//(h2): sum of the distances of each tile from desired goal state
 inline int GetManhattanCost(const State &st)
 {
    int cost = 0;
@@ -64,7 +66,7 @@ inline int GetManhattanCost(const State &st)
    return cost;
 }
 
-
+//find minimum value of the openlist elements based on GREEDYBESTFIRST algorithm
 class CompareFunctorForGreedyBestFirst
 {
 public:
@@ -81,7 +83,8 @@ public:
     }
 };
 
-class CompareFunctorForAStar
+
+class CompareFunctorForAStar_H1
 {
 public:
     bool operator()(
@@ -89,13 +92,42 @@ public:
             const std::shared_ptr<Node> &n2) const
     {
        const State &state1 = n1->GetState();
-       int cost1 = GetManhattanCost(state1) + GetHammingCost(state1) + n1->GetDepth();
-       const State &state2 = n2->GetState();
-       int cost2 = GetManhattanCost(state2) + GetHammingCost(state2) + n2->GetDepth();
+       int cost1 = GetHammingCost(state1) + n1->GetDepth();
+       std::cout << " h1(n):" << GetHammingCost(state1) << " g(n):" << n1->GetDepth() << " f(n): "
+                 << GetHammingCost(state1) + n1->GetDepth() << endl;
 
+       const State &state2 = n2->GetState();
+       int cost2 = GetHammingCost(state2) + n2->GetDepth();
+       std::cout << " h1(n):" << GetHammingCost(state2) << " g(n):" << n2->GetDepth() << " f(n): "
+                 << GetHammingCost(state1) + n2->GetDepth() << endl;
        return cost1 < cost2;
     }
 };
+
+//find minimum value of the openlist elements based on ASTAR algorithm
+//ASTAR selects node with the least f-score
+class CompareFunctorForAStar_H2
+{
+public:
+    bool operator()(
+            const std::shared_ptr<Node> &n1,
+            const std::shared_ptr<Node> &n2) const
+    {
+       const State &state1 = n1->GetState();
+       int cost1 = GetManhattanCost(state1) + n1->GetDepth();
+       std::cout << "h2(n):" << GetManhattanCost(state1) << " g(n):" << n1->GetDepth() << " f(n): "
+                 << GetManhattanCost(state1) + n1->GetDepth()
+                 << endl;
+
+       const State &state2 = n2->GetState();
+       int cost2 = GetManhattanCost(state2) + n2->GetDepth();
+       std::cout << "h2(n):" << GetManhattanCost(state2) << " g(n):" << n2->GetDepth() << " f(n): "
+                 << GetManhattanCost(state2) + n2->GetDepth()
+                 << endl;
+       return cost1 < cost2;
+    }
+};
+
 
 class Solver
 {
@@ -105,12 +137,13 @@ public:
         DEPTH_FIRST = 0,
         BREADTH_FIRST,
         GREEDY_BEST_FIRST,
-        ASTAR,
+        ASTAR_H1,
+        ASTAR_H2,
         SMA,
         IDA
     };
 
-    Solver(const State &start, const State &goal, Type type = Type::ASTAR)
+    Solver(const State &start, const State &goal, Type type = Type::ASTAR_H2)
             : _goal(goal), _solved(false), _type(type)
     {
        NodePtr root(new Node(start, 0, 0));
@@ -142,12 +175,37 @@ public:
 
        switch (_type)
        {
-          case ASTAR:
+          //ASTAR = F(n) = g(n) + h(n)
+          // where g(n) is total cost to reach n along path or total cost from ground node to current node.
+          // where h1(n) is the number of misplaced tiles
+          //where h2(n) is sum of distances of tiles from their goal positions
+
+
+          case ASTAR_H1:
           {
              NodeList::iterator current_itr(std::min_element(
                      _openlist.begin(),
                      _openlist.end(),
-                     CompareFunctorForAStar()));
+                     CompareFunctorForAStar_H1()));
+
+             if (current_itr == _openlist.end())
+             { return 0; }
+
+             //copy the value first to a shared pointer and then erase from the open list.
+             current = *current_itr;
+
+             // now erase from the open list.
+             _openlist.erase(current_itr);
+             _closedlist.push_back(current);
+
+             break;
+          }
+          case ASTAR_H2:
+          {
+             NodeList::iterator current_itr(std::min_element(
+                     _openlist.begin(),
+                     _openlist.end(),
+                     CompareFunctorForAStar_H2()));
 
              if (current_itr == _openlist.end())
              { return 0; }

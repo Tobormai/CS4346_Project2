@@ -13,22 +13,27 @@ using namespace std;
 #include <cassert>
 #include <algorithm>
 
+// define neighbors based on where empty tile can move
 class Neighbors
 {
 public:
     typedef map<int, vector<int> > IndexNeighborMap;
     IndexNeighborMap _edges;
 
+    //constructor
     Neighbors()
     {
        CreateGraphFor8Puzzle();
     }
 
+    //returns vector of index of neighboring tiles where empty tile can move; input parameter is index to empty tile
     const vector<int> &GetNeighbors(int id) const
     {
        IndexNeighborMap::const_iterator itr(_edges.find(id));
        if (itr != _edges.end())
-       { return itr->second; }
+       {
+          return itr->second;
+       }
        static vector<int> s;
        return s;
     }
