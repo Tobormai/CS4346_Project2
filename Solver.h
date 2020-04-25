@@ -66,6 +66,23 @@ inline int GetManhattanCost(const State &st)
    return cost;
 }
 
+//(h1) : number of misplaced tiles for _state
+inline int GetThreshold(const std::shared_ptr<Node> &n1, const std::shared_ptr<Node> &n2)
+{
+   {
+      const State &state1 = n1->GetState();
+      int cost1 = GetHammingCost(state1) + n1->GetDepth();
+/*       std::cout << " h1(n):" << GetHammingCost(state1) << " g(n):" << n1->GetDepth() << " f(n): "
+                 << GetHammingCost(state1) + n1->GetDepth() << endl;*/
+
+      const State &state2 = n2->GetState();
+      int cost2 = GetHammingCost(state2) + n2->GetDepth();
+/*       std::cout << " h1(n):" << GetHammingCost(state2) << " g(n):" << n2->GetDepth() << " f(n): "
+                 << GetHammingCost(state1) + n2->GetDepth() << endl;*/
+      return cost1;
+   }
+}
+
 //find minimum value of the openlist elements based on GREEDYBESTFIRST algorithm
 class CompareFunctorForGreedyBestFirst
 {
@@ -83,13 +100,11 @@ public:
     }
 };
 
-
 class CompareFunctorForAStar_H1
 {
 public:
-    bool operator()(
-            const std::shared_ptr<Node> &n1,
-            const std::shared_ptr<Node> &n2) const
+    //return bool for compare nodes f(n) value
+    bool operator()(const std::shared_ptr<Node> &n1, const std::shared_ptr<Node> &n2) const
     {
        const State &state1 = n1->GetState();
        int cost1 = GetHammingCost(state1) + n1->GetDepth();
@@ -128,6 +143,31 @@ public:
     }
 };
 
+class CompareFunctorForAStar_IDA
+{
+public:
+
+    bool operator()(std::shared_ptr<Node> &n1, std::shared_ptr<Node> &n2)
+    {
+       int threshold;
+       const State &state1 = n1->GetState();
+       int cost1 = GetManhattanCost(state1) + n1->GetDepth();
+       threshold = GetThreshold(n1, n2);
+       std::cout << "threshold: " << threshold << endl;
+
+       const State &state2 = n2->GetState();
+       int cost2 = GetManhattanCost(state2) + n2->GetDepth();
+       threshold = GetThreshold(n1, n2);
+       if (cost1 > threshold)
+       {
+
+          // std::cout << "threshold: " << threshold << endl;
+       }
+       return cost1 < cost2;
+    }
+
+
+};
 
 class Solver
 {
@@ -179,14 +219,11 @@ public:
           // where g(n) is total cost to reach n along path or total cost from ground node to current node.
           // where h1(n) is the number of misplaced tiles
           //where h2(n) is sum of distances of tiles from their goal positions
-
-
           case ASTAR_H1:
           {
-             NodeList::iterator current_itr(std::min_element(
-                     _openlist.begin(),
-                     _openlist.end(),
-                     CompareFunctorForAStar_H1()));
+             NodeList::iterator current_itr(
+                     std::min_element(_openlist.begin(), _openlist.end(), CompareFunctorForAStar_H1()));
+
 
              if (current_itr == _openlist.end())
              { return 0; }
@@ -202,10 +239,10 @@ public:
           }
           case ASTAR_H2:
           {
-             NodeList::iterator current_itr(std::min_element(
-                     _openlist.begin(),
-                     _openlist.end(),
-                     CompareFunctorForAStar_H2()));
+             //min_element function returns an iterator to element with the smallest value in range [_openlist.begin(), openlist.end()) so does not include the element pointed by openlist.end()
+             //comp() binary function that accepts two elements in the range as arguments, returns a value convertible to bool. value returned indicates whether the element passed as first argument is less than second argument
+             NodeList::iterator current_itr(
+                     std::min_element(_openlist.begin(), _openlist.end(), CompareFunctorForAStar_H2()));
 
              if (current_itr == _openlist.end())
              { return 0; }
@@ -248,6 +285,24 @@ public:
           }
           case IDA:
           {
+             NodeList::iterator current_itr(
+                     std::min_element(_openlist.begin(), _openlist.end(), CompareFunctorForAStar_IDA()));
+
+             if (current_itr == _openlist.end())
+             { return 0; }
+
+
+             //copy the value first to a shared pointer and then erase from the open list.
+             current = *current_itr;
+
+             // now erase from the open list.
+             _openlist.erase(current_itr);
+             _closedlist.push_back(
+                     current); //doesn't keep track of visited node and therefore explores already explored nodes again.
+
+             break;
+
+
              //Why: Want low space complexity but completeness and optimality
              //Key Idea: re-compute elements of the frontier rather than saving them
              //Use DFS to look for solutions at depth 1, then 2, then 3..etc.
@@ -274,6 +329,7 @@ public:
              //Note: Depth bound is incremented on each iteration starting at depth = 0
              //Note: Repetitive but has linear space complexity. allows for fast cache memory rather than having to
              // access slower memory. Speedup due to limited amount of memory have to store simultaneously for this algorithm.
+
           }
           case DEPTH_FIRST:
              //current = _openlist[0];
@@ -294,7 +350,7 @@ public:
        return current;
     }
 
-    // expand the graph by looking into the neighbours for the given node.
+    // expand the graph by looking into the neighbors for the given node.
     void ExpandNode(NodePtr current, const Neighbors &graph)
     {
        if (current->GetState() == _goal)
