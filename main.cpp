@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <ctime>
+#include <chrono>
 #include "State.h"
 #include "Neighbors.h"
 #include "Node.h"
@@ -9,7 +11,7 @@
 int main(int argc, char *argv[])
 {
 
-   int timer = (clock() * 1000) / CLOCKS_PER_SEC;
+  int timer = (clock() * 1000) / CLOCKS_PER_SEC;
    int runtime = 0;
 
 
@@ -21,7 +23,7 @@ int main(int argc, char *argv[])
 
 //********CHANGE ME TO RUN DIFFERENT SOLVER ALGORITHM*******//
    std::shared_ptr<Node> node;
-   Solver solver(start, goal, Solver::ASTAR);
+   Solver solver(start, goal, Solver::IDA);
    if (!solver.isSolvable())
    {
       std::cout << "Puzzle state is unsolvable..!\n";
@@ -30,7 +32,7 @@ int main(int argc, char *argv[])
    int count = 0;
    while (!solver.isSolved())
    {
-      runtime = ((clock() * 10000) / CLOCKS_PER_SEC) - timer;
+     runtime = ((clock() * 10000) / CLOCKS_PER_SEC) - timer;
       node = solver.GetNextNode();
       solver.ExpandNode(node, g);
       count++;

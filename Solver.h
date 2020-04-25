@@ -81,6 +81,7 @@ public:
     }
 };
 
+
 class CompareFunctorForAStar
 {
 public:
@@ -94,6 +95,22 @@ public:
        int cost2 = GetManhattanCost(state2) + GetHammingCost(state2) + n2->GetDepth();
 
        return cost1 < cost2;
+    }
+};
+
+class CompareFunctorForIdaStar
+{
+public:
+    bool operator()(
+            const std::shared_ptr<Node> &n1,
+            const std::shared_ptr<Node> &n2) const
+    {
+        const State &state1 = n1->GetState();
+        int cost1 = GetManhattanCost(state1) + n1->GetDepth();
+        const State &state2 = n2->GetState();
+        int cost2 = GetManhattanCost(state2) + n2->GetDepth();
+        
+        return cost1 < cost2;
     }
 };
 
@@ -190,6 +207,20 @@ public:
           }
           case IDA:
           {
+              NodeList::iterator current_itr(std::min_element(
+                      _openlist.begin(),
+                      _openlist.end(),
+                      CompareFunctorForIdaStar()));
+
+              if (current_itr == _openlist.end())
+              { return 0; }
+
+              //copy the value first to a shared pointer and then erase from the open list.
+              current = *current_itr;
+
+              // now erase from the open list.
+              _openlist.erase(current_itr);
+              _closedlist.push_back(current);
              //Why: Want low space complexity but completeness and optimality
              //Key Idea: re-compute elements of the frontier rather than saving them
              //Use DFS to look for solutions at depth 1, then 2, then 3..etc.
@@ -216,6 +247,8 @@ public:
              //Note: Depth bound is incremented on each iteration starting at depth = 0
              //Note: Repetitive but has linear space complexity. allows for fast cache memory rather than having to
              // access slower memory. Speedup due to limited amount of memory have to store simultaneously for this algorithm.
+
+            break;
           }
           case DEPTH_FIRST:
              //current = _openlist[0];
