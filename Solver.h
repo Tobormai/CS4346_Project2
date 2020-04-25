@@ -63,7 +63,21 @@ inline int GetManhattanCost(const State &st)
    }
    return cost;
 }
+inline int GetThreshold(const std::shared_ptr<Node> &n1, const std::shared_ptr<Node> &n2)
+{
+    {
+        const State &state1 = n1->GetState();
+        int cost1 = GetHammingCost(state1) + n1->GetDepth();
+/*       std::cout << " h1(n):" << GetHammingCost(state1) << " g(n):" << n1->GetDepth() << " f(n): "
+                 << GetHammingCost(state1) + n1->GetDepth() << endl;*/
 
+        const State &state2 = n2->GetState();
+        int cost2 = GetHammingCost(state2) + n2->GetDepth();
+/*       std::cout << " h1(n):" << GetHammingCost(state2) << " g(n):" << n2->GetDepth() << " f(n): "
+                 << GetHammingCost(state1) + n2->GetDepth() << endl;*/
+        return cost1;
+    }
+}
 
 class CompareFunctorForGreedyBestFirst
 {
@@ -105,10 +119,17 @@ public:
             const std::shared_ptr<Node> &n1,
             const std::shared_ptr<Node> &n2) const
     {
+        int threshold;
         const State &state1 = n1->GetState();
         int cost1 = GetManhattanCost(state1) + n1->GetDepth();
         const State &state2 = n2->GetState();
         int cost2 = GetManhattanCost(state2) + n2->GetDepth();
+        threshold = GetThreshold(n1, n2);
+       // std::cout << "threshold: " << threshold << endl;
+        if(cost1 > threshold)
+        {
+            //std::cout <<"thershold reached"<<endl;
+        }
         
         return cost1 < cost2;
     }
@@ -221,32 +242,7 @@ public:
               // now erase from the open list.
               _openlist.erase(current_itr);
               _closedlist.push_back(current);
-             //Why: Want low space complexity but completeness and optimality
-             //Key Idea: re-compute elements of the frontier rather than saving them
-             //Use DFS to look for solutions at depth 1, then 2, then 3..etc.
-             //for depth D, ignore any paths with longer length
-             //depth bound is measured in terms of the f value
-             //If you don’t find a solution at a given depth –
-             // Increase the depth bound: to the minimum of the f-values that exceeded the previous bound
-
-             //Manhattan Distance get approximation of ‘how far’ are we from reaching the final state.
-             // IDDFS to search if target is reachable from v.
-
-
-             //Steps:
-
-             //
-             //Perform depth-bounded search at depth = 0.
-             // Initialize Frontier = {A}, depth = 0. Remove A from Frontier. Check if A is goal. A at maximum depth bound of depth 0 so don't expand A.
-             // Reiterate. Frontier initialized to A. Remove A from Frontier. A is not a goal. A is not at maximum depth bound so expand A.
-             // Children of A are B and C. Frontier = {B, C}. B removed from Frontier. B is not a goal. B is at maximum depth bound so don't expand.
-             // Children of A are B and C. Frontier = {C}. C removed from Frontier. C is not a goal. C is at maximum depth bound so don't expand.
-             //Reiterate. Start all over from A.
-
-             //Note: Order of Expansion or order nodes removed from Frontier was maintained.
-             //Note: Depth bound is incremented on each iteration starting at depth = 0
-             //Note: Repetitive but has linear space complexity. allows for fast cache memory rather than having to
-             // access slower memory. Speedup due to limited amount of memory have to store simultaneously for this algorithm.
+\
 
             break;
           }

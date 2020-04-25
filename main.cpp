@@ -1,19 +1,35 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
-#include <chrono>
+#include <fstream>
 #include "State.h"
 #include "Neighbors.h"
 #include "Node.h"
 #include "Solver.h"
 
+void memory_process(double& vm)
+{
+    vm = 0.0;
+
+    unsigned long vsize;
+
+    {
+        std::string ignore;
+        std::ifstream ifs("/proc/self/stat", std::ios_base::in);
+        ifs >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore
+            >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore
+            >> ignore >> ignore >> vsize;
+    }
+   vm = vsize/1024.0;
+
+}
 
 int main(int argc, char *argv[])
 {
 
   int timer = (clock() * 1000) / CLOCKS_PER_SEC;
    int runtime = 0;
-
+   double vm;
 
    Neighbors g;
 
@@ -50,6 +66,8 @@ int main(int argc, char *argv[])
    // print the solution.
    std::cout << "The puzzle can be solved in " << solution.size() - 1 << " steps. Solution below\n";
    std::cout << "The puzzle can be solved in " << runtime << " milliseconds\n";
+    memory_process(vm);
+    std:: cout << "Memory used "<< vm <<" \n";
    for (int i = (int) solution.size() - 1; i >= 0; i--)
    {
       solution[i]->GetState().print(std::cout, false);
