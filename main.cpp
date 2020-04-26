@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
    Neighbors g;
 
 //   State goal(3, std::vector<int>{1, 2, 3, 8, 0, 4, 7, 6, 5});
+//   State start(3, std::vector<int>{2, 8, 3 ,1, 6, 4, 0, 7, 5});
 //   State start(3, std::vector<int>{2, 1, 6, 4, 0, 8, 7, 5, 3});
 
    State goal(3, std::vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 0});
@@ -23,13 +24,14 @@ int main(int argc, char *argv[])
 
 //********CHANGE ME TO RUN DIFFERENT SOLVER ALGORITHM*******//
    std::shared_ptr<Node> node;
-   Solver solver(start, goal, Solver::patternDatabase);
+   Solver solver(start, goal, Solver::ASTAR_H1);
    if (!solver.isSolvable())
    {
       std::cout << "Puzzle state is unsolvable..!\n";
       return 0;
    }
-   int count = 0;
+   int countNG = 0;
+   int countNE = 0;
    while (!solver.isSolved())
    {
       runtime = ((clock() * 1000) / CLOCKS_PER_SEC) - timer;
@@ -37,7 +39,6 @@ int main(int argc, char *argv[])
       {
          node = solver.GetNextNode();
          solver.ExpandNode(node, g);
-         count++;
       }
       else
       {
@@ -56,7 +57,15 @@ int main(int argc, char *argv[])
 
    // print the solution.
    std::cout << "The puzzle can be solved in " << solution.size() - 1 << " steps. Solution below\n";
-   std::cout << "The puzzle can be solved in " << runtime << " milliseconds\n";
+
+   std::cout << "PERFORMANCE DATA: " << endl;
+
+   std::cout << "Execution Time (ET): " << runtime << " milliseconds\n";
+   std::cout << "Number of Nodes Generated (NG):  " << solver.countNG << endl;
+   std::cout << "Number of Nodes Expanded (NE):  " << solver.countNE << endl;
+   std::cout << "Depth of Tree (d):  " << solver.depth << endl;
+   std::cout << "Effective Branching Factor b* (b*):  " << solver.countNG / solver.depth << endl;
+
    for (int i = (int) solution.size() - 1; i >= 0; i--)
    {
       solution[i]->GetState().print(std::cout, false);

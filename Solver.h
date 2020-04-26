@@ -578,6 +578,7 @@ public:
              if (current_itr == _openlist.end())
              { return 0; }
 
+
              //copy the value first to a shared pointer and then erase from the open list.
              current = *current_itr;
 
@@ -716,11 +717,14 @@ public:
           {
              NodePtr n(new Node(state, current, current->GetDepth() + 1));
              _openlist.push_back(n);
+             countNG++;
              static int s_lineNum = 1;
              n->print(std::cout, s_lineNum++);
+             depth = current->GetDepth() + 1;
              //_closedlist.push_back(n);
           }
        }
+       countNE = _closedlist.size();
     }
 
 private:
@@ -730,6 +734,10 @@ private:
     const State &_goal;
     bool _solved;
     Type _type;
+public:
+    int countNE = 0;
+    int countNG = 0;
+    int depth = 0;
 };
 
 
