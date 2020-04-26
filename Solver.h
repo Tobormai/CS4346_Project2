@@ -65,6 +65,126 @@ inline int GetManhattanCost(const State &st)
    }
    return cost;
 }
+// Madison Start
+inline int GetDiagonalCost(const State &st)
+        {
+            int cost = 0;
+            int temp = 0;
+            const IntArray &state = st.GetArray();
+            for (unsigned int i = 0; i < state.size(); ++i)
+            {
+                temp = state[i];
+
+                if(temp == 0)
+                { continue; }
+                if(temp == 1)
+                {
+                    if(i == 0)
+                    { continue;}
+                    if(i == 1 || i == 4 || i == 3)
+                    {
+                        cost = cost + 1;
+                    }else
+                    {
+                        cost = cost + 2;
+                    }
+
+
+                }
+                if(temp == 2)
+                {
+                    if(i == 1)
+                    { continue;}
+                    if(i == 6 || i == 7 || i == 8)
+                    {
+                        cost = cost + 2;
+                    }else
+                    {
+                        cost = cost + 1;
+                    }
+
+                }
+                if(temp == 3)
+                {
+                    if(i == 2)
+                    { continue;}
+                    if(i == 1 || i == 4 || i == 5)
+                    {
+                        cost = cost + 1;
+                    }else
+                    {
+                        cost = cost + 2;
+                    }
+
+                }
+                if(temp == 4)
+                {
+                    if(i == 3)
+                    { continue;}
+                    if(i == 2 || i == 5 || i == 8)
+                    {
+                        cost = cost + 2;
+                    }else
+                    {
+                        cost = cost + 1;
+                    }
+
+                }
+                if(temp == 5)
+                {
+                    if(i == 4)
+                    { continue;}
+                    else
+                    {
+                        cost = cost + 1;
+                    }
+
+                }
+                if (temp == 6)
+                {
+                    if(i == 5)
+                    { continue;}
+                    if(i == 0 || i == 3 || i == 6)
+                    {
+                        cost = cost + 2;
+                    }else
+                    {
+                        cost = cost + 1;
+                    }
+
+                }
+                if (temp == 7)
+                {
+                    if(i == 6)
+                    { continue;}
+                    if(i == 7 || i == 4 || i == 3)
+                    {
+                        cost = cost + 1;
+                    }else
+                    {
+                        cost = cost + 2;
+                    }
+
+                }
+                if(temp == 8)
+                {
+                    if(i == 7)
+                    { continue;}
+                    if(i == 2 || i == 1 || i == 0)
+                    {
+                        cost = cost + 2;
+                    }else
+                    {
+                        cost = cost + 1;
+                    }
+
+                }
+            }
+
+            return cost;
+
+        }
+// Madison End
 
 inline int GetThreshold(const std::shared_ptr<Node> &n1)
 {
@@ -432,7 +552,25 @@ public:
 };
 
 // ERIK ADDED ABOVE
+// Madison add
+class DiagonalCompare
+{
+    public:
+    bool operator()
+            (const std::shared_ptr<Node> &n1,
+             const std::shared_ptr<Node> &n2) const
+    {
+        const State &state1 = n1->GetState();
+        int cost1 = GetDiagonalCost(state1) + n1->GetDepth(); // Cost is based off distance from home and allows for diagonals
+        const State &state2 = n2->GetState();
+        int cost2 = GetDiagonalCost(state2) + n2->GetDepth(); // Cost is based off distance from home and allows for diagonals
 
+        return cost1 < cost2;
+
+    }
+
+};
+//Madison add end
 class Solver
 {
 public:
@@ -446,7 +584,8 @@ public:
         SMA,
         IDA,
         AStarSN, // ERIK ADDED
-        patternDatabase // ERIK ADDED
+        patternDatabase, // ERIK ADDED
+        Diagonal //Madison added
     };
 
     Solver(const State &start, const State &goal, Type type = Type::ASTAR_H2)
@@ -568,6 +707,25 @@ public:
              break;
           }
              // **** ERIK Added here
+                            // Madison Start
+            case Diagonal:
+            {
+                NodeList::iterator current_itr(
+                        std::min_element(_openlist.begin(), _openlist.end(), DiagonalCompare()));
+
+                if (current_itr == _openlist.end())
+                { return 0; }
+
+                //copy the value first to a shared pointer and then erase from the open list.
+                current = *current_itr;
+
+                // now erase from the open list.
+                _openlist.erase(current_itr);
+                _closedlist.push_back(current);
+
+                break;
+            }
+            // Madison End
 
           case ASTAR_H1:
           {
