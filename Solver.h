@@ -82,7 +82,7 @@ inline int calculateSofN(const State &st) // Non-admissable heuristic function
               SofN = SofN + 2;}  // Adds 2
     
               } else if(i == 1){ // Pos 1
-              if (state[1] + 1 != state[2]){ // Checks if pos 0 is 1 less then pos 1
+              if (state[1] + 1 != state[2]){ // Checks if pos 1 is 1 less then pos 2
               SofN = SofN + 2; }
                   
               } else if(i == 2){ // Pos 2 // Checking Down as circular function
@@ -187,6 +187,62 @@ inline int calculatePatternDatabase(const State &st) // Subproblem Admissable he
 return cost;
 }
 
+
+// A heuristic function for 8 square to calculate if numbers are in the correct rows or not
+// This function will be admissable because the cost of not being in the correct row would not be overestimated
+// Function will search each value, and then do a check if its in the correct row
+// If the value is not in the correct row, we will add a cost of 1 - as it would have to move at least 1 to get to correct position
+inline int heuristicOfRows(const State &st)
+{
+    // Admissable - does not over estimate cost
+   int cost = 0;
+   const IntArray &state = st.GetArray();
+  
+    for (unsigned int i = 0; i < state.size(); ++i) // Going through full state
+   {
+       // Multiple Rules, and not saved in order due to goal state -Using if/else vs loop
+       if (i == 0 ){      // Pos 0
+       if (state[3] && state[4] && state[5]  != 0){ // Checks if 0 is in the correct ROW
+       cost = cost + 1;}
+           
+       } else if(i == 1){ //  1
+       if (state[0] && state[1] && state[2]  != 1){ // Checks if 1 in in the correct ROW
+       cost = cost + 1; }
+           
+       } else if(i == 2){ //  2
+       if (state[0] && state[1] && state[2]  != 2){ // Checks if 2 in in the correct ROW
+       cost = cost + 1;}
+           
+       } else if(i == 3){ //  3
+       if (state[0] && state[1] && state[2]  != 3){ // Checks if 3 in in the correct ROW
+       cost = cost + 1;}
+           
+       } else if (i == 4){ //  4
+       if (state[3] && state[4] && state[5]  != 4){ // Checks if 4 in in the correct ROW
+       cost = cost + 1; }
+           
+       } else if(i == 5){ //  5
+       if (state[6] && state[7] && state[8]  != 5){ // Checks if 5 in in the correct ROW
+       cost = cost + 1;}
+           
+      } else if(i == 6){ //  6
+      if (state[6] && state[7] && state[8]  != 6){ // Checks if 6 in in the correct ROW
+      cost = cost + 1;}
+          
+      } else if(i == 7){ //  7
+      if (state[6] && state[7] && state[8]  != 7){ // Checks if 7 in in the correct ROW
+      cost = cost + 1;}
+    
+      } else if(i == 8){ //  8
+      if (state[3] && state[4] && state[5]  != 8){ // Checks if 8 in in the correct ROW
+      cost = cost + 1;}
+             }
+   }
+    
+   return cost;
+}
+
+
 // ERIK ADDED HERE ABOVE
 
 class CompareFunctorForGreedyBestFirst
@@ -233,10 +289,8 @@ public:
        // H(n) = h1(n)+ 3*S(n)
        const State &state1 = n1->GetState();
        int cost1 = GetHammingCost(state1) + 3 * calculateSofN(state1) + n1->GetDepth();
-        
        const State &state2 = SN->GetState();
        int cost2 = GetHammingCost(state2) + 3 * calculateSofN(state2) + SN->GetDepth();
-        
        return cost1 < cost2;
     }
 };
@@ -258,6 +312,21 @@ public:
     }
 };
 
+class CompareheuristicOfRows
+{
+public:
+    bool operator()(
+             // Using only a portion of manhattan distance - for subproblem
+            const std::shared_ptr<Node> &n1,
+            const std::shared_ptr<Node> &n2) const
+    {
+       const State &state1 = n1->GetState();
+       int cost1 = heuristicOfRows(state1) + n1->GetDepth(); // Cost is based off distance of pattern values
+       const State &state2 = n2->GetState();
+       int cost2 = heuristicOfRows(state2) + n2->GetDepth(); // Cost is based off distance of pattern values
+       return cost1 < cost2;
+    }
+};
 
 
 // ERIK ADDED ABOVE
@@ -274,7 +343,8 @@ public:
         SMA,
         IDA,
         AStarSN, // ERIK ADDED
-        patternDatabase // ERIK ADDED
+        patternDatabase, // ERIK ADDED
+        rowsHeuristic // ERIK ADDED
     };
 
     Solver(const State &start, const State &goal, Type type = Type::ASTAR)
@@ -311,6 +381,26 @@ public:
        {
                
                // **** ERIK Added here
+            
+            case rowsHeuristic:
+                  {
+                      NodeList::iterator current_itr(std::min_element(
+                           _openlist.begin(),
+                           _openlist.end(),
+                           CompareheuristicOfRows())); // Calling function for Heuristic Of Rows
+
+                           if (current_itr == _openlist.end())
+                           { return 0; }
+
+                           //copy the value first to a shared pointer and then erase from the open list.
+                           current = *current_itr;
+
+                          // now erase from the open list.
+                          _openlist.erase(current_itr);
+                          _closedlist.push_back(current);
+                          break;
+                          }
+
             case patternDatabase:
                  {
                      NodeList::iterator current_itr(std::min_element(
@@ -397,35 +487,7 @@ public:
 
              break;
           }
-          case IDA:
-          {
-             //Why: Want low space complexity but completeness and optimality
-             //Key Idea: re-compute elements of the frontier rather than saving them
-             //Use DFS to look for solutions at depth 1, then 2, then 3..etc.
-             //for depth D, ignore any paths with longer length
-             //depth bound is measured in terms of the f value
-             //If you don’t find a solution at a given depth –
-             // Increase the depth bound: to the minimum of the f-values that exceeded the previous bound
-
-             //Manhattan Distance get approximation of ‘how far’ are we from reaching the final state.
-             // IDDFS to search if target is reachable from v.
-
-
-             //Steps:
-
-             //
-             //Perform depth-bounded search at depth = 0.
-             // Initialize Frontier = {A}, depth = 0. Remove A from Frontier. Check if A is goal. A at maximum depth bound of depth 0 so don't expand A.
-             // Reiterate. Frontier initialized to A. Remove A from Frontier. A is not a goal. A is not at maximum depth bound so expand A.
-             // Children of A are B and C. Frontier = {B, C}. B removed from Frontier. B is not a goal. B is at maximum depth bound so don't expand.
-             // Children of A are B and C. Frontier = {C}. C removed from Frontier. C is not a goal. C is at maximum depth bound so don't expand.
-             //Reiterate. Start all over from A.
-
-             //Note: Order of Expansion or order nodes removed from Frontier was maintained.
-             //Note: Depth bound is incremented on each iteration starting at depth = 0
-             //Note: Repetitive but has linear space complexity. allows for fast cache memory rather than having to
-             // access slower memory. Speedup due to limited amount of memory have to store simultaneously for this algorithm.
-          }
+         
           case DEPTH_FIRST:
              //current = _openlist[0];
              NodeList::iterator current_itr(_openlist.begin());
@@ -442,8 +504,6 @@ public:
              break;
        }
         
-        
-
        return current;
     }
 
