@@ -27,7 +27,11 @@ void memory_process(double &vm)
 
 int main(int argc, char *argv[])
 {
+
+   int timer = (clock() * 1000) / CLOCKS_PER_SEC;
+   int runtime = 0;
    double vm;
+
    Neighbors g;
    auto startClock = high_resolution_clock::now();
 
@@ -40,7 +44,7 @@ int main(int argc, char *argv[])
 
 //********CHANGE ME TO RUN DIFFERENT SOLVER ALGORITHM*******//
    std::shared_ptr<Node> node;
-   Solver solver(start, goal, Solver::rowsHeuristic);
+   Solver solver(start, goal, Solver::patternDatabase);
    if (!solver.isSolvable())
    {
       std::cout << "Puzzle state is unsolvable..!\n";
