@@ -65,126 +65,6 @@ inline int GetManhattanCost(const State &st)
    }
    return cost;
 }
-// Madison Start
-inline int GetDiagonalCost(const State &st)
-        {
-            int cost = 0;
-            int temp = 0;
-            const IntArray &state = st.GetArray();
-            for (unsigned int i = 0; i < state.size(); ++i)
-            {
-                temp = state[i];
-
-                if(temp == 0)
-                { continue; }
-                if(temp == 1)
-                {
-                    if(i == 0)
-                    { continue;}
-                    if(i == 1 || i == 4 || i == 3)
-                    {
-                        cost = cost + 1;
-                    }else
-                    {
-                        cost = cost + 2;
-                    }
-
-
-                }
-                if(temp == 2)
-                {
-                    if(i == 1)
-                    { continue;}
-                    if(i == 6 || i == 7 || i == 8)
-                    {
-                        cost = cost + 2;
-                    }else
-                    {
-                        cost = cost + 1;
-                    }
-
-                }
-                if(temp == 3)
-                {
-                    if(i == 2)
-                    { continue;}
-                    if(i == 1 || i == 4 || i == 5)
-                    {
-                        cost = cost + 1;
-                    }else
-                    {
-                        cost = cost + 2;
-                    }
-
-                }
-                if(temp == 4)
-                {
-                    if(i == 3)
-                    { continue;}
-                    if(i == 2 || i == 5 || i == 8)
-                    {
-                        cost = cost + 2;
-                    }else
-                    {
-                        cost = cost + 1;
-                    }
-
-                }
-                if(temp == 5)
-                {
-                    if(i == 4)
-                    { continue;}
-                    else
-                    {
-                        cost = cost + 1;
-                    }
-
-                }
-                if (temp == 6)
-                {
-                    if(i == 5)
-                    { continue;}
-                    if(i == 0 || i == 3 || i == 6)
-                    {
-                        cost = cost + 2;
-                    }else
-                    {
-                        cost = cost + 1;
-                    }
-
-                }
-                if (temp == 7)
-                {
-                    if(i == 6)
-                    { continue;}
-                    if(i == 7 || i == 4 || i == 3)
-                    {
-                        cost = cost + 1;
-                    }else
-                    {
-                        cost = cost + 2;
-                    }
-
-                }
-                if(temp == 8)
-                {
-                    if(i == 7)
-                    { continue;}
-                    if(i == 2 || i == 1 || i == 0)
-                    {
-                        cost = cost + 2;
-                    }else
-                    {
-                        cost = cost + 1;
-                    }
-
-                }
-            }
-
-            return cost;
-
-        }
-// Madison End
 
 inline int GetThreshold(const std::shared_ptr<Node> &n1)
 {
@@ -244,7 +124,7 @@ inline int calculateSofN(const State &st) // Non-admissable heuristic function
          if (i == 1)
          { // Pos 1
             if (state[1] + 1 != state[2])
-            { // Checks if pos 0 is 1 less then pos 1
+            { // Checks if pos 1 is 1 less then pos 2
                SofN = SofN + 2;
             }
 
@@ -419,8 +299,248 @@ inline int calculatePatternDatabase(const State &st) // Subproblem Admissable he
    return cost;
 }
 
-// ERIK ADDED HERE ABOVE
 
+// A heuristic function for 8 square to calculate if numbers are in the correct rows or not
+// This function will be admissable because the cost of not being in the correct row would not be overestimated
+// Function will search each value, and then do a check if its in the correct row
+// If the value is not in the correct row, we will add a cost of 1 - as it would have to move at least 1 to get to correct position
+inline int heuristicOfRows(const State &st)
+{
+   // Admissable - does not over estimate cost
+   int cost = 0;
+   const IntArray &state = st.GetArray();
+
+   for (unsigned int i = 0; i < state.size(); ++i) // Going through full state
+   {
+      // Multiple Rules, and not saved in order due to goal state -Using if/else vs loop
+      if (i == 0)
+      {      // Pos 0
+         if (state[3] && state[4] && state[5] != 0)
+         { // Checks if 0 is in the correct ROW
+            cost = cost + 1;
+         }
+
+      }
+      else
+      {
+         if (i == 1)
+         { //  1
+            if (state[0] && state[1] && state[2] != 1)
+            { // Checks if 1 in in the correct ROW
+               cost = cost + 1;
+            }
+
+         }
+         else
+         {
+            if (i == 2)
+            { //  2
+               if (state[0] && state[1] && state[2] != 2)
+               { // Checks if 2 in in the correct ROW
+                  cost = cost + 1;
+               }
+
+            }
+            else
+            {
+               if (i == 3)
+               { //  3
+                  if (state[0] && state[1] && state[2] != 3)
+                  { // Checks if 3 in in the correct ROW
+                     cost = cost + 1;
+                  }
+
+               }
+               else
+               {
+                  if (i == 4)
+                  { //  4
+                     if (state[3] && state[4] && state[5] != 4)
+                     { // Checks if 4 in in the correct ROW
+                        cost = cost + 1;
+                     }
+
+                  }
+                  else
+                  {
+                     if (i == 5)
+                     { //  5
+                        if (state[6] && state[7] && state[8] != 5)
+                        { // Checks if 5 in in the correct ROW
+                           cost = cost + 1;
+                        }
+
+                     }
+                     else
+                     {
+                        if (i == 6)
+                        { //  6
+                           if (state[6] && state[7] && state[8] != 6)
+                           { // Checks if 6 in in the correct ROW
+                              cost = cost + 1;
+                           }
+
+                        }
+                        else
+                        {
+                           if (i == 7)
+                           { //  7
+                              if (state[6] && state[7] && state[8] != 7)
+                              { // Checks if 7 in in the correct ROW
+                                 cost = cost + 1;
+                              }
+
+                           }
+                           else
+                           {
+                              if (i == 8)
+                              { //  8
+                                 if (state[3] && state[4] && state[5] != 8)
+                                 { // Checks if 8 in in the correct ROW
+                                    cost = cost + 1;
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   return cost;
+}
+//ERIK ADDED HERE ABOVE
+
+// Madison Start
+inline int GetDiagonalCost(const State &st)
+{
+   int cost = 0;
+   int temp = 0;
+   const IntArray &state = st.GetArray();
+   for (unsigned int i = 0; i < state.size(); ++i)
+   {
+      temp = state[i];
+
+      if (temp == 0)
+      { continue; }
+      if (temp == 1)
+      {
+         if (i == 0)
+         { continue; }
+         if (i == 1 || i == 4 || i == 3)
+         {
+            cost = cost + 1;
+         }
+         else
+         {
+            cost = cost + 2;
+         }
+
+
+      }
+      if (temp == 2)
+      {
+         if (i == 1)
+         { continue; }
+         if (i == 6 || i == 7 || i == 8)
+         {
+            cost = cost + 2;
+         }
+         else
+         {
+            cost = cost + 1;
+         }
+
+      }
+      if (temp == 3)
+      {
+         if (i == 2)
+         { continue; }
+         if (i == 1 || i == 4 || i == 5)
+         {
+            cost = cost + 1;
+         }
+         else
+         {
+            cost = cost + 2;
+         }
+
+      }
+      if (temp == 4)
+      {
+         if (i == 3)
+         { continue; }
+         if (i == 2 || i == 5 || i == 8)
+         {
+            cost = cost + 2;
+         }
+         else
+         {
+            cost = cost + 1;
+         }
+
+      }
+      if (temp == 5)
+      {
+         if (i == 4)
+         { continue; }
+         else
+         {
+            cost = cost + 1;
+         }
+
+      }
+      if (temp == 6)
+      {
+         if (i == 5)
+         { continue; }
+         if (i == 0 || i == 3 || i == 6)
+         {
+            cost = cost + 2;
+         }
+         else
+         {
+            cost = cost + 1;
+         }
+
+      }
+      if (temp == 7)
+      {
+         if (i == 6)
+         { continue; }
+         if (i == 7 || i == 4 || i == 3)
+         {
+            cost = cost + 1;
+         }
+         else
+         {
+            cost = cost + 2;
+         }
+
+      }
+      if (temp == 8)
+      {
+         if (i == 7)
+         { continue; }
+         if (i == 2 || i == 1 || i == 0)
+         {
+            cost = cost + 2;
+         }
+         else
+         {
+            cost = cost + 1;
+         }
+
+      }
+   }
+
+   return cost;
+
+}
+// Madison End
 
 
 //find minimum value of the openlist elements based on GREEDYBESTFIRST algorithm
@@ -526,10 +646,8 @@ public:
        // H(n) = h1(n)+ 3*S(n)
        const State &state1 = n1->GetState();
        int cost1 = GetHammingCost(state1) + 3 * calculateSofN(state1) + n1->GetDepth();
-
        const State &state2 = SN->GetState();
        int cost2 = GetHammingCost(state2) + 3 * calculateSofN(state2) + SN->GetDepth();
-
        return cost1 < cost2;
     }
 };
@@ -551,26 +669,46 @@ public:
     }
 };
 
+class CompareheuristicOfRows
+{
+public:
+    bool operator()(
+            // Using only a portion of manhattan distance - for subproblem
+            const std::shared_ptr<Node> &n1,
+            const std::shared_ptr<Node> &n2) const
+    {
+       const State &state1 = n1->GetState();
+       int cost1 = heuristicOfRows(state1) + n1->GetDepth(); // Cost is based off distance of pattern values
+       const State &state2 = n2->GetState();
+       int cost2 = heuristicOfRows(state2) + n2->GetDepth(); // Cost is based off distance of pattern values
+       return cost1 < cost2;
+    }
+};
+
 // ERIK ADDED ABOVE
+
 // Madison add
 class DiagonalCompare
 {
-    public:
+public:
     bool operator()
             (const std::shared_ptr<Node> &n1,
              const std::shared_ptr<Node> &n2) const
     {
-        const State &state1 = n1->GetState();
-        int cost1 = GetDiagonalCost(state1) + n1->GetDepth(); // Cost is based off distance from home and allows for diagonals
-        const State &state2 = n2->GetState();
-        int cost2 = GetDiagonalCost(state2) + n2->GetDepth(); // Cost is based off distance from home and allows for diagonals
+       const State &state1 = n1->GetState();
+       int cost1 = GetDiagonalCost(state1) +
+                   n1->GetDepth(); // Cost is based off distance from home and allows for diagonals
+       const State &state2 = n2->GetState();
+       int cost2 = GetDiagonalCost(state2) +
+                   n2->GetDepth(); // Cost is based off distance from home and allows for diagonals
 
-        return cost1 < cost2;
+       return cost1 < cost2;
 
     }
 
 };
 //Madison add end
+
 class Solver
 {
 public:
@@ -585,6 +723,7 @@ public:
         IDA,
         AStarSN, // ERIK ADDED
         patternDatabase, // ERIK ADDED
+        rowsHeuristic, // ERIK ADDED
         Diagonal //Madison added
     };
 
@@ -668,65 +807,6 @@ public:
           // where h1(n) is the number of misplaced tiles
           //where h2(n) is sum of distances of tiles from their goal positions
 
-          // **** ERIK Added here
-          case patternDatabase:
-          {
-             NodeList::iterator current_itr(std::min_element(
-                     _openlist.begin(),
-                     _openlist.end(),
-                     ComparePatternDatabase()));
-
-             if (current_itr == _openlist.end())
-             { return 0; }
-
-             //copy the value first to a shared pointer and then erase from the open list.
-             current = *current_itr;
-
-             // now erase from the open list.
-             _openlist.erase(current_itr);
-             _closedlist.push_back(current);
-             break;
-          }
-
-          case AStarSN:
-          {
-             NodeList::iterator current_itr(std::min_element(
-                     _openlist.begin(),
-                     _openlist.end(),
-                     CompareFunctorForAStar()));
-
-             if (current_itr == _openlist.end())
-             { return 0; }
-
-             //copy the value first to a shared pointer and then erase from the open list.
-             current = *current_itr;
-
-             // now erase from the open list.
-             _openlist.erase(current_itr);
-             _closedlist.push_back(current);
-             break;
-          }
-             // **** ERIK Added here
-                            // Madison Start
-            case Diagonal:
-            {
-                NodeList::iterator current_itr(
-                        std::min_element(_openlist.begin(), _openlist.end(), DiagonalCompare()));
-
-                if (current_itr == _openlist.end())
-                { return 0; }
-
-                //copy the value first to a shared pointer and then erase from the open list.
-                current = *current_itr;
-
-                // now erase from the open list.
-                _openlist.erase(current_itr);
-                _closedlist.push_back(current);
-
-                break;
-            }
-            // Madison End
-
           case ASTAR_H1:
           {
              NodeList::iterator current_itr(
@@ -735,6 +815,7 @@ public:
 
              if (current_itr == _openlist.end())
              { return 0; }
+
 
              //copy the value first to a shared pointer and then erase from the open list.
              current = *current_itr;
@@ -835,6 +916,7 @@ public:
              break;
           }
           case DEPTH_FIRST:
+          {
              //current = _openlist[0];
              NodeList::iterator current_itr(_openlist.begin());
              if (current_itr == _openlist.end())
@@ -848,8 +930,88 @@ public:
              _closedlist.push_back(current);
 
              break;
-       }
+          }
 
+             // **** ERIK Added here
+
+          case rowsHeuristic:
+          {
+             NodeList::iterator current_itr(std::min_element(
+                     _openlist.begin(),
+                     _openlist.end(),
+                     CompareheuristicOfRows())); // Calling function for Heuristic Of Rows
+
+             if (current_itr == _openlist.end())
+             { return 0; }
+
+             //copy the value first to a shared pointer and then erase from the open list.
+             current = *current_itr;
+
+             // now erase from the open list.
+             _openlist.erase(current_itr);
+             _closedlist.push_back(current);
+             break;
+          }
+
+          case patternDatabase:
+          {
+             NodeList::iterator current_itr(std::min_element(
+                     _openlist.begin(),
+                     _openlist.end(),
+                     ComparePatternDatabase()));
+
+             if (current_itr == _openlist.end())
+             { return 0; }
+
+             //copy the value first to a shared pointer and then erase from the open list.
+             current = *current_itr;
+
+             // now erase from the open list.
+             _openlist.erase(current_itr);
+             _closedlist.push_back(current);
+             break;
+          }
+
+          case AStarSN:
+          {
+             NodeList::iterator current_itr(std::min_element(
+                     _openlist.begin(),
+                     _openlist.end(),
+                     CompareFunctorForAStar()));
+
+             if (current_itr == _openlist.end())
+             { return 0; }
+
+             //copy the value first to a shared pointer and then erase from the open list.
+             current = *current_itr;
+
+             // now erase from the open list.
+             _openlist.erase(current_itr);
+             _closedlist.push_back(current);
+             break;
+          }
+             // **** ERIK Added here
+             // Madison Start
+          case Diagonal:
+          {
+             NodeList::iterator current_itr(
+                     std::min_element(_openlist.begin(), _openlist.end(), DiagonalCompare()));
+
+             if (current_itr == _openlist.end())
+             { return 0; }
+
+             //copy the value first to a shared pointer and then erase from the open list.
+             current = *current_itr;
+
+             // now erase from the open list.
+             _openlist.erase(current_itr);
+             _closedlist.push_back(current);
+
+             break;
+          }
+             // Madison End
+       }
+       _typePrint = _type;
        return current;
     }
 
@@ -874,11 +1036,14 @@ public:
           {
              NodePtr n(new Node(state, current, current->GetDepth() + 1));
              _openlist.push_back(n);
+             countNG++;
              static int s_lineNum = 1;
              n->print(std::cout, s_lineNum++);
+             depth = current->GetDepth() + 1;
              //_closedlist.push_back(n);
           }
        }
+       countNE = _closedlist.size();
     }
 
 private:
@@ -888,6 +1053,11 @@ private:
     const State &_goal;
     bool _solved;
     Type _type;
+public:
+    int countNE = 0;
+    int countNG = 0;
+    int depth = 0;
+    Type _typePrint;
 };
 
 

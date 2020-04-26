@@ -26,6 +26,10 @@ memory
 State.h
 /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/State.h
 
+/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Solver.cpp
+Solver.h
+/cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Solver.h
+
 /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Solver.h
 vector
 -
@@ -55,6 +59,10 @@ iostream
 -
 vector
 -
+ctime
+-
+fstream
+-
 State.h
 /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/State.h
 Neighbors.h
@@ -63,4 +71,6 @@ Node.h
 /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Node.h
 Solver.h
 /cygdrive/c/Users/WYNI/Documents/CS4346_ArtificialIntelligence/Project2/Solver.h
+chrono
+-
 
