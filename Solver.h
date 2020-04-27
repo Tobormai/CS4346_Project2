@@ -66,37 +66,6 @@ inline int GetManhattanCost(const State &st)
    return cost;
 }
 
-inline int GetThreshold(const std::shared_ptr<Node> &n1)
-{
-   {
-      const State &state1 = n1->GetState();
-      int cost1 = GetManhattanCost(state1) + n1->GetDepth();
-/*       std::cout << " h1(n):" << GetHammingCost(state1) << " g(n):" << n1->GetDepth() << " f(n): "
-                 << GetHammingCost(state1) + n1->GetDepth() << endl;*/
-      return cost1;
-   }
-}
-
-inline int Search(std::shared_ptr<Node> node, int gScore, int threshold)
-{
-   {
-      std::shared_ptr<Node> node;
-      const State &state1 = node->GetState();
-      int gScore = node->GetDepth();
-      int f = gScore + GetManhattanCost(state1);
-
-      if (f > threshold)
-      {
-         return f;
-      }
-      //if(node->GetState() )
-      {
-
-      }
-
-   }
-}
-
 // ERIK ADDED HERE BELOW
 
 // Function to Calculate S(n) to be implemented into the A* Algorithm
@@ -609,11 +578,13 @@ public:
 
     bool operator()(std::shared_ptr<Node> &n1, std::shared_ptr<Node> &n2)
     {
+
        const State &state1 = n1->GetState();
        int cost1 = GetManhattanCost(state1) + n1->GetDepth();
 
        const State &state2 = n2->GetState();
        int cost2 = GetManhattanCost(state2) + n2->GetDepth();
+
        return cost1 < cost2;
     }
 };
@@ -749,7 +720,19 @@ public:
        return true;
     }
 
-    inline int Search(std::shared_ptr<Node> node, int gScore, int threshold)
+    inline int GetThreshold(const shared_ptr<Node> &n1)
+    {
+       {
+          const State &state1 = n1->GetState();
+          int cost1 = GetManhattanCost(state1) + n1->GetDepth();
+/*       std::cout << " h1(n):" << GetHammingCost(state1) << " g(n):" << n1->GetDepth() << " f(n): "
+                 << GetHammingCost(state1) + n1->GetDepth() << endl;*/
+          fValue = cost1;
+          return cost1;
+       }
+    }
+
+    inline int Search(NodePtr current, int gScore, int threshold)
     {
        {
           std::shared_ptr<Node> node;
@@ -758,39 +741,39 @@ public:
           int f = gScore + GetManhattanCost(state1);
           int FOUND = 0;
           int MAX_INT = 100;
+          return f;
 
-          if (f > threshold)
-          {
-             return f;
-          }
-          if (node->GetState() == _goal)
-          {
-             return FOUND;
-          }
-          int min = MAX_INT;
-          NodePtr current;
-          current = _openlist[0];
-          NodeList::iterator current_itr(_openlist.begin());
-          if (current_itr == _openlist.end())
-          {
-             return 0;
-          }
-          else
-          {
-             int temp = Search(GetNextNode(), gScore, threshold);
-             if (temp == FOUND)
-             {
-                return FOUND;
-             }
-             if (temp < min)
-             {
-                min = temp;
-             }
-          }
+//          if (f > threshold)
+//          {
+//             return f;
+//          }
+//          if (node->GetState() == _goal)
+//          {
+//             return FOUND;
+//          }
+//          int min = MAX_INT;
+//          NodePtr current;
+//          current = _openlist[0];
+//          NodeList::iterator current_itr(_openlist.begin());
+//          if (current_itr == _openlist.end())
+//          {
+//             return 0;
+//          }
+//          else
+//          {
+//             int temp = Search(GetNextNode(), gScore, threshold);
+//             if (temp == FOUND)
+//             {
+//                return FOUND;
+//             }
+//             if (temp < min)
+//             {
+//                min = temp;
+//             }
+//          }
        }
 
     }
-
 
     ///Returns next node in the search.
     //template<class Compare> osg::ref_ptr<Node> GetNextNode(Compare cmp)
@@ -812,10 +795,8 @@ public:
              NodeList::iterator current_itr(
                      std::min_element(_openlist.begin(), _openlist.end(), CompareFunctorForAStar_H1()));
 
-
              if (current_itr == _openlist.end())
              { return 0; }
-
 
              //copy the value first to a shared pointer and then erase from the open list.
              current = *current_itr;
@@ -874,15 +855,6 @@ public:
           }
           case IDA:
           {
-             Neighbors g;
-             std::shared_ptr<Node> node;
-             const State &state1 = node->GetState();
-             int gScore = node->GetDepth();
-             int FOUND = 0;
-             current = _openlist[0];
-             int threshold = GetThreshold(current);
-
-             std::cout << "Threshold: " << threshold << endl;
 
              NodeList::iterator current_itr(_openlist.begin());
              if (current_itr == _openlist.end())
@@ -891,30 +863,16 @@ public:
              //copy the value first to a shared pointer and then erase from the open list.
              current = *current_itr;
 
-             while (1)
-             {
-                int temp = Search(node, gScore, threshold);
-                if (temp == FOUND)
-                {
-                   return 0; //return temp
-                }
-                if (temp == INFINITY)
-                {
-                   return 0; //or set time limit exceeded
-                }
-                threshold = temp;
-
-                //node = GetNextNode();
-                //ExpandNode(node, g);
-             }
+             fValue = GetThreshold(current);
 
              // now erase from the open list.
              _openlist.erase(current_itr);
-             _closedlist.push_back(
-                     current); //doesn't keep track of visited node and therefore explores already explored nodes again.
+             _closedlist.push_back(current);
 
              break;
+
           }
+
           case DEPTH_FIRST:
           {
              //current = _openlist[0];
@@ -1057,6 +1015,9 @@ public:
     int countNE = 0;
     int countNG = 0;
     int depth = 0;
+    int depthBound = 0;
+    int threshold = 0;
+    int fValue = 0;
     Type _typePrint;
 };
 

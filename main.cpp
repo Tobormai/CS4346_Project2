@@ -35,25 +35,88 @@ int main(int argc, char *argv[])
    Neighbors g;
    auto startClock = high_resolution_clock::now();
 
-   State goal(3, std::vector<int>{1, 2, 3, 8, 0, 4, 7, 6, 5});
-//  State start(3, std::vector<int>{2, 8, 3 ,1, 6, 4, 0, 7, 5});
-   State start(3, std::vector<int>{2, 1, 6, 4, 0, 8, 7, 5, 3});
+//   State goal(3, std::vector<int>{1, 2, 3, 8, 0, 4, 7, 6, 5});
+//   State start(3, std::vector<int>{2, 8, 3 ,1, 6, 4, 0, 7, 5});
+//   State start(3, std::vector<int>{2, 1, 6, 4, 0, 8, 7, 5, 3});
 
-//   State goal(3, std::vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 0});
-//   State start(3, std::vector<int>{1, 2, 3, 0, 4, 6, 7, 5, 8});
+   State goal(3, std::vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 0});
+   State start(3, std::vector<int>{1, 2, 3, 0, 4, 6, 7, 5, 8});
 
 //********CHANGE ME TO RUN DIFFERENT SOLVER ALGORITHM*******//
    std::shared_ptr<Node> node;
-   Solver solver(start, goal, Solver::patternDatabase);
+   std::shared_ptr<Node> root;
+
+   Solver solver(start, goal, Solver::IDA);
+
    if (!solver.isSolvable())
    {
       std::cout << "Puzzle state is unsolvable..!\n";
       return 0;
    }
-   while (!solver.isSolved())
+   if (!solver.IDA)
    {
+
+      while (!solver.isSolved())
+      {
          node = solver.GetNextNode();
          solver.ExpandNode(node, g);
+      }
+   }
+
+   if (solver.IDA)
+   {
+      std::cout << "IDA running...." << endl;
+      int threshold = 0;
+      int f = 0;
+      int gScore = 0;
+      NodePtr r = node;
+      //int f = solver.fValue;
+
+      while (!solver.isSolved())
+      {
+         //Solver solver(start, goal, Solver::IDA);
+
+         node = solver.GetNextNode();
+         solver.ExpandNode(node, g);
+         gScore = node->GetDepth();
+         //threshold = solver.fValue;
+         cout << "gScore:" << gScore << " | " << " threshold:" << threshold << endl;
+
+         f = solver.GetThreshold(node);
+         std::cout << "fNew: " << f << endl;
+         if (f > threshold)
+         {
+            //greater f encounter increase threshold
+            threshold = f;
+            Solver solver(start, goal, Solver::IDA);
+            node = solver.GetNextNode();
+            solver.ExpandNode(node, g);
+         }
+         //if goal FOUND return FOUND
+         if (solver.isSolved())
+         {
+            cout << "Is Solved" << endl;
+         }
+
+//         //int threshold = solver.GetThreshold(root);
+//         if (f > threshold)
+//         {
+//            //return f as new threshold. needs to be lowest value of compare function
+//            solver.fValue = f;
+//            root = solver.GetNextNode();
+//            solver.ExpandNode(root, g);
+//         }
+//         else{
+//            root = solver.GetNextNode();
+//            f = solver.GetThreshold(root);
+//            std::cout << "fValue: " << f << endl;
+//
+//            f = solver.threshold;
+//            solver.ExpandNode(root, g);
+//         }
+
+
+      }
    }
 
    // accumulate the nodes for the solution.
